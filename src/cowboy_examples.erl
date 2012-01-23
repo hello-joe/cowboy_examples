@@ -20,11 +20,11 @@ start(_Type, _Args) ->
 			{'_', default_handler, []}
 		]}
 	],
-	cowboy:start_listener(http, 100,
+	cowboy:start_listener(my_http_listener, 100,
 		cowboy_tcp_transport, [{port, 8080}],
 		cowboy_http_protocol, [{dispatch, Dispatch}]
 	),
-	cowboy:start_listener(https, 100,
+	cowboy:start_listener(my_https_listener, 100,
 		cowboy_ssl_transport, [
 			{port, 8443}, {certfile, "priv/ssl/cert.pem"},
 			{keyfile, "priv/ssl/key.pem"}, {password, "cowboy"}],
