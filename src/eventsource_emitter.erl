@@ -5,7 +5,7 @@
 -export([init/3, handle/2, terminate/2]).
 
 init({_Any, http}, Req, []) ->
-	timer:send_interval(1000, <<"Tick">>),
+	timer:send_interval(1000, {event, <<"Tick">>}),
 	timer:send_after(10000, shutdown),
 	{ok, Req, undefined}.
 
@@ -18,7 +18,7 @@ handle_loop(Req, State) ->
 	receive
 		shutdown ->
 			{ok, Req, State};
-		Message ->
+		{event, Message} ->
 			Event = ["id: ", id(), "\ndata: ", Message, "\n\n"],
 			ok = cowboy_http_req:chunk(Event, Req),
 			handle_loop(Req, State)
